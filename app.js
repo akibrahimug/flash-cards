@@ -7,41 +7,22 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.use(cookieParser())
 app.set('view engine', 'pug');
 
-app.get('/', (req, res) => {
-    const name = req.cookies.username;
-    if(name){
-        res.render('index', {name});
-    }else{
-        res.redirect('hello')
-    }
-})
-
-app.get('/cards', (req, res) => {
-    res.render('card', {prompt: 'Who is buried in Grants tomb?', hint: 'Guess what'})
-})
-
-app.get('/hello', (req, res) => {
-    res.render('hello', {name: req.cookies.username})
-})
-
-app.post('/hello', (req,res) => {
-    // Body of the response form the server
-    const name = req.body.username;
-
-    res.cookie('username', name);
-    if(name){
-        res.redirect('/');
-    }else{
-        res.redirect('hello')
-    }
-    
-})
-
-app.post('/goodbye', (req,res) => {
-    res.clearCookie('username');
-    res.redirect('/hello')
-})
+const mainRoutes = require('./routes');
+const cardsRoute = require('./routes/cards');
+app.use(mainRoutes);
+app.use('/cards', cardsRoute)
 
 app.listen(3000, () => {
     console.log('The app is running at LocalHost:3000')
+})
+
+app.use((req, res, next) => {
+    const err =new Error('Not Found');
+    err.status = 404;
+    next(err)
+})
+
+app.use((err, req, res, next) => {
+    res.locals.error = err;
+    res.status(err.status)
 })
