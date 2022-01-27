@@ -6,6 +6,7 @@ const app = express();
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(cookieParser())
 app.set('view engine', 'pug');
+app.use('/static',express.static('public'))
 
 const mainRoutes = require('./routes');
 const cardsRoute = require('./routes/cards');

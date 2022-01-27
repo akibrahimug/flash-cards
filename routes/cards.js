@@ -12,12 +12,12 @@ router.get('/:id', (req, res) => {
     const {side} = req.query;
     const {id} = req.params;
     if(!side){
-        res.redirect(`/cards/${id}?side=question`)
+        return res.redirect(`/cards/${id}?side=question`)
     }
     const text = cards[id][side];
     const {hint} = cards[id];
 
-    const templateData = {id, text};
+    const templateData = {id, text, side, hint};
     if(side === 'question'){
         templateData.hint = hint;
         templateData.sideToShow = 'answer';
