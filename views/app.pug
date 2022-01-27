@@ -2,14 +2,14 @@ extends layout.pug
 
 block main 
     section.namecard 
-        .namecard-login 
+        .namecard-hello 
             if name 
                 p.namecard-greeting Welcome, #{name}!
-                form.namecard-exit(action="/goodbye", method="POST")
+                form.namecard-exit(action="/goodbye" method="post")
                     button(type="submit")
                         img(src="/static/img/close.svg")
             else 
                 p.namecard-greeting Hello, Student! 
         block intro 
         
-    block card
+        block card
